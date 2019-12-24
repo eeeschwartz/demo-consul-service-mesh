@@ -10,9 +10,9 @@ services:
       - 8500:8500
     networks:
       dc1:
-        ipv4_address: 10.5.0.2
+        ipv4_address: ${DC1_SERVER_PRIVATE_IP}
       wan:
-        ipv4_address: 192.169.7.2
+        ipv4_address: ${DC1_SERVER_PUBLIC_IP}
 
   # Define web service and envoy sidecar proxy
   web:
@@ -26,14 +26,14 @@ services:
       HTTP_CLIENT_KEEP_ALIVES: "false"
     networks:
       dc1:
-        ipv4_address: 10.5.0.3
+        ipv4_address: ${DC1_SERVICE_WEB_IP}
     ports:
       - 9090:9090
   web_envoy:
     image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     environment:
-      CONSUL_HTTP_ADDR: 10.5.0.2:8500
-      CONSUL_GRPC_ADDR: 10.5.0.2:8502
+      CONSUL_HTTP_ADDR: ${DC1_SERVER_PRIVATE_IP}:8500
+      CONSUL_GRPC_ADDR: ${DC1_SERVER_PRIVATE_IP}:8502
       SERVICE_CONFIG: /config/web_v1.hcl
       CENTRAL_CONFIG: "/central_config/web-defaults.hcl;/central_config/payments-defaults.hcl;/central_config/payments-resolver.hcl"
     volumes:
@@ -53,12 +53,12 @@ services:
       SERVER_TYPE: "http"
     networks:
       dc1:
-        ipv4_address: 10.5.0.4
+        ipv4_address: ${DC1_SERVICE_CURRENCY_IP}
   currency_proxy:
     image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     environment:
-      CONSUL_HTTP_ADDR: 10.5.0.2:8500
-      CONSUL_GRPC_ADDR: 10.5.0.2:8502
+      CONSUL_HTTP_ADDR: ${DC1_SERVER_PRIVATE_IP}:8500
+      CONSUL_GRPC_ADDR: ${DC1_SERVER_PRIVATE_IP}:8502
       SERVICE_CONFIG: /config/currency_dc1.hcl
     volumes:
       - "./service_config:/config"
@@ -68,8 +68,8 @@ services:
   gateway-dc1:
     image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     environment:
-      CONSUL_HTTP_ADDR: 10.5.0.2:8500
-      CONSUL_GRPC_ADDR: 10.5.0.2:8502
+      CONSUL_HTTP_ADDR: ${DC1_SERVER_PRIVATE_IP}:8500
+      CONSUL_GRPC_ADDR: ${DC1_SERVER_PRIVATE_IP}:8502
     command: [
       "consul",
       "connect", "envoy",
