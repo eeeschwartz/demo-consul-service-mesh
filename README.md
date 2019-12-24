@@ -29,7 +29,7 @@ All central config is stored in the `central_config` folder in each example.
 ### [Traffic Splitting](traffic_split/)
 This demonstration shows how traffic can be split between two service instances. This feature could be used for a Canary or Dark deployment testing strategy.
 
-![](traffic_split/images/shifting_1.png)
+![](traffic_splitting/images/shifting_1.png)
 
 ### [Traffic Routing](traffic_routing/)
 This demonstration shows how upstream traffic can be routed between two services using HTTP paths.
@@ -43,7 +43,7 @@ This demonstration shows how to configure Consul Service Mesh for Observability.
 ### [Service Failover](failover/)
 This demonstration shows how to failover upstream services to a different datacenter. This feature could be used to main uptime during a partial or regional service outage.
 
-![](failover/images/failover.png)
+![]("images /failover.png")
 
 ### [Consul Gateways](gateways/)
 This demonstration shows how to route traffic to a second Consul Datacenter using Consul Gateways. This feature could be used to route traffic between Virtual Machines and Kubernetes.
@@ -55,7 +55,7 @@ This demonstration shows how to route traffic to a second Consul Datacenter usin
 ### [Traffic Splitting](kubernetes/traffic_splitting/)
 This demonstration shows how traffic can be split between two service instances. This feature could be used for a Canary or Dark deployment testing strategy.
 
-![](traffic_split/images/shifting_1.png)
+![](traffic_splitting/images/shifting_1.png)
 
 ### [Traffic Routing](kubernetes/traffic_routing/)
 This demonstration shows how upstream traffic can be routed between two services using HTTP paths.
