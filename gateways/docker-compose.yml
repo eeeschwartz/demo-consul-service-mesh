@@ -75,15 +75,15 @@ services:
       "connect", "envoy",
       "-mesh-gateway",
       "-register",
-      "-address", "10.5.0.5:443",
-      "-wan-address", "192.169.7.3:443",
+      "-address", "${DC1_GATEWAY_PRIVATE_IP}:443",
+      "-wan-address", "${DC1_GATEWAY_PUBLIC_IP}:443",
       "--",
       "-l", "debug"]
     networks:
       dc1:
-        ipv4_address: 10.5.0.5
+        ipv4_address: ${DC1_GATEWAY_PRIVATE_IP}
       wan:
-        ipv4_address: 192.169.7.3
+        ipv4_address: ${DC1_GATEWAY_PUBLIC_IP}
 
 
   consul-dc2:
@@ -95,9 +95,9 @@ services:
       - 9500:8500
     networks:
       dc2:
-        ipv4_address: 10.6.0.2
+        ipv4_address: ${DC2_SERVER_PRIVATE_IP}
       wan:
-        ipv4_address: 192.169.7.4
+        ipv4_address: ${DC2_SERVER_PUBLIC_IP}
 
   # Define api service and envoy sidecar proxy for version 2 of the service
   payments_v2:
@@ -109,12 +109,12 @@ services:
       MESSAGE: "PAYMENTS V2"
     networks:
       dc2:
-        ipv4_address: 10.6.0.3
+        ipv4_address: ${DC2_SERVICE_PAYMENTS_IP}
   payments_proxy_v2:
     image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     environment:
-      CONSUL_HTTP_ADDR: 10.6.0.2:8500
-      CONSUL_GRPC_ADDR: 10.6.0.2:8502
+      CONSUL_HTTP_ADDR: ${DC2_SERVER_PRIVATE_IP}:8500
+      CONSUL_GRPC_ADDR: ${DC2_SERVER_PRIVATE_IP}:8502
       SERVICE_CONFIG: /config/payments_v2.hcl
       CENTRAL_CONFIG: "/central_config/web-defaults.hcl;/central_config/currency-defaults.hcl;/central_config/currency-resolver.hcl"
     volumes:
@@ -127,34 +127,34 @@ services:
   gateway-dc2:
     image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     environment:
-      CONSUL_HTTP_ADDR: 10.6.0.2:8500
-      CONSUL_GRPC_ADDR: 10.6.0.2:8502
+      CONSUL_HTTP_ADDR: ${DC2_SERVER_PRIVATE_IP}:8500
+      CONSUL_GRPC_ADDR: ${DC2_SERVER_PRIVATE_IP}:8502
     command: [
       "consul",
       "connect", "envoy",
       "-mesh-gateway",
       "-register",
-      "-address", "10.6.0.5:443",
-      "-wan-address", "192.169.7.5:443",
+      "-address", "${DC2_GATEWAY_PRIVATE_IP}:443",
+      "-wan-address", "${DC2_GATEWAY_PUBLIC_IP}:443",
       "--",
       "-l", "debug"]
     networks:
       dc2:
-        ipv4_address: 10.6.0.5
+        ipv4_address: ${DC2_GATEWAY_PRIVATE_IP}
       wan:
-        ipv4_address: 192.169.7.5
+        ipv4_address: ${DC2_GATEWAY_PUBLIC_IP}
 
 networks:
   dc1:
     driver: bridge
     ipam:
      config:
-       - subnet: 10.5.0.0/16
+       - subnet: ${DC1_SUBNET}
   dc2:
     driver: bridge
     ipam:
      config:
-       - subnet: 10.6.0.0/16
+       - subnet: ${DC2_SUBNET}
   wan:
     driver: bridge
     ipam:
