@@ -2,7 +2,7 @@
 This repository contains various demonstrations to highlight features and configuration in Consul Service Mesh.
 
 ## Docker Compose
-**NOTE**: All service registration and central config is automatically applied when running these examples.  
+**NOTE**: All service registration and central config is automatically applied when running these examples.
 To apply configuration manually you can comment out the `CENTRAL_CONFIG` environment variable in the docker-compose.yml files:
 ```yaml
   web_envoy:
@@ -43,7 +43,7 @@ This demonstration shows how to configure Consul Service Mesh for Observability.
 ### [Service Failover](failover/)
 This demonstration shows how to failover upstream services to a different datacenter. This feature could be used to main uptime during a partial or regional service outage.
 
-![]("images /failover.png")
+![](images/failover.png)
 
 ### [Consul Gateways](gateways/)
 This demonstration shows how to route traffic to a second Consul Datacenter using Consul Gateways. This feature could be used to route traffic between Virtual Machines and Kubernetes.
