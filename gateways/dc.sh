@@ -1,4 +1,13 @@
-# E.g. Set in AWS:
+# E.g. run dc2 in a single public node in AWS
+#
+# DC1
+# PUB_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+# DC1_GATEWAY_PUBLIC_IP=$PUB_IP DC1_SERVER_PUBLIC_IP=$PUB_IP ./dc.sh -f docker-compose-dc1.yml up
+#
+# DC2 (needs to manually know IP of dc1)
+# PUB_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+# DC1_SERVER_PUBLIC_IP='1.2.3.4' DC2_GATEWAY_PUBLIC_IP=$PUB_IP DC2_SERVER_PUBLIC_IP=$PUB_IP ./dc.sh -f docker-compose-dc2.yml up
+
 export DC1_SERVER_PUBLIC_IP=${DC1_SERVER_PUBLIC_IP:-'192.169.7.2'}
 export DC1_GATEWAY_PUBLIC_IP=${DC1_GATEWAY_PUBLIC_IP:-'192.169.7.3'}
 export DC2_SERVER_PUBLIC_IP=${DC2_SERVER_PUBLIC_IP:-'192.169.7.4'}
