@@ -23,5 +23,3 @@ ui = true
 enable_central_service_config = true
 
 advertise_addr = "10.6.0.2"
-advertise_addr_wan = "192.169.7.4"
-retry_join_wan = ["192.169.7.2"]

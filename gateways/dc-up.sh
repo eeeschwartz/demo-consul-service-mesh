@@ -13,4 +13,4 @@ export DC2_SERVICE_PAYMENTS_IP='10.6.0.3'
 export DC2_GATEWAY_PRIVATE_IP='10.6.0.5'
 export DC2_GATEWAY_PUBLIC_IP='192.169.7.5'
 
-docker-compose up
+docker-compose -f docker-compose-dc1.yml -f docker-compose-dc2.yml up
