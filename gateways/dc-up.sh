@@ -15,4 +15,5 @@ export DC2_SERVER_PRIVATE_IP='10.6.0.2'
 export DC2_SERVICE_PAYMENTS_IP='10.6.0.3'
 export DC2_GATEWAY_PRIVATE_IP='10.6.0.5'
 
-docker-compose -f docker-compose-dc1.yml -f docker-compose-dc2.yml up $@
+# To run full stack locally: ./dc-up -f docker-compose-dc1.yml -f docker-compose-dc2.yml up $@
+docker-compose $@
