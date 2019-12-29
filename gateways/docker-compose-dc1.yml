@@ -13,11 +13,11 @@ services:
       - "../consul_config:/config"
     ports:
       - 8500:8500
+      - 8300:8300
+      - 8302:8302
     networks:
       dc1:
         ipv4_address: ${DC1_SERVER_PRIVATE_IP}
-      wan:
-        ipv4_address: ${DC1_SERVER_PUBLIC_IP}
 
   # Define web service and envoy sidecar proxy
   web:
@@ -75,21 +75,20 @@ services:
     environment:
       CONSUL_HTTP_ADDR: ${DC1_SERVER_PRIVATE_IP}:8500
       CONSUL_GRPC_ADDR: ${DC1_SERVER_PRIVATE_IP}:8502
+    ports:
+      - 4443:4443
     command: [
       "consul",
       "connect", "envoy",
       "-mesh-gateway",
       "-register",
-      "-address", "${DC1_GATEWAY_PRIVATE_IP}:443",
-      "-wan-address", "${DC1_GATEWAY_PUBLIC_IP}:443",
+      "-address", "${DC1_GATEWAY_PRIVATE_IP}:4443",
+      "-wan-address", "${DC1_GATEWAY_PUBLIC_IP}:4443",
       "--",
       "-l", "debug"]
     networks:
       dc1:
         ipv4_address: ${DC1_GATEWAY_PRIVATE_IP}
-      wan:
-        ipv4_address: ${DC1_GATEWAY_PUBLIC_IP}
-
 
 networks:
   dc1:
@@ -97,13 +96,3 @@ networks:
     ipam:
      config:
        - subnet: ${DC1_SUBNET}
-  dc2:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: ${DC2_SUBNET}
-  wan:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 192.169.7.0/24

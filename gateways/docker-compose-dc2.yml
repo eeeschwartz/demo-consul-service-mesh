@@ -12,12 +12,12 @@ services:
     volumes:
       - "../consul_config:/config"
     ports:
-      - 9500:8500
+      - 8500:8500
+      - 8300:8300
+      - 8302:8302
     networks:
       dc2:
         ipv4_address: ${DC2_SERVER_PRIVATE_IP}
-      wan:
-        ipv4_address: ${DC2_SERVER_PUBLIC_IP}
 
   # Define api service and envoy sidecar proxy for version 2 of the service
   payments_v2:
@@ -43,27 +43,25 @@ services:
     command: ["consul", "connect", "envoy","-sidecar-for", "payments-v2"]
     network_mode: "service:payments_v2"
 
-
   gateway-dc2:
     image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     environment:
       CONSUL_HTTP_ADDR: ${DC2_SERVER_PRIVATE_IP}:8500
       CONSUL_GRPC_ADDR: ${DC2_SERVER_PRIVATE_IP}:8502
+    ports:
+      - 4443:4443
     command: [
       "consul",
       "connect", "envoy",
       "-mesh-gateway",
       "-register",
-      "-address", "${DC2_GATEWAY_PRIVATE_IP}:443",
-      "-wan-address", "${DC2_GATEWAY_PUBLIC_IP}:443",
+      "-address", "${DC2_GATEWAY_PRIVATE_IP}:4443",
+      "-wan-address", "${DC2_GATEWAY_PUBLIC_IP}:4443",
       "--",
       "-l", "debug"]
     networks:
       dc2:
         ipv4_address: ${DC2_GATEWAY_PRIVATE_IP}
-      wan:
-        ipv4_address: ${DC2_GATEWAY_PUBLIC_IP}
-
 
 networks:
   dc2:
