@@ -18,7 +18,7 @@ services:
     image: nicholasjackson/fake-service:v0.7.3
     entrypoint: ['sh', '-c']
     command:
-      - 'apk update && apk add bind-tools && dig @10.5.0.2 -p 8600 payments.service.consul'
+      - 'apk update && apk add bind-tools && dig @${DC1_PRIVATE_IP} -p 8600 payments.service.consul'
     environment:
       LISTEN_ADDR: 0.0.0.0:9090
       # UPSTREAM_URIS: http://localhost:9091
