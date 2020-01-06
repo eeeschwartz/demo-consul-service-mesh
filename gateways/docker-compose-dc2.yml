@@ -1,0 +1,50 @@
+version: "3.3"
+services:
+
+  consul-dc2:
+    image: consul:1.6.2
+    command:
+      - consul
+      - agent
+      - "-config-file=/config/consul-dc2.hcl"
+      - "-advertise=10.5.0.2"
+      - "-advertise-wan=192.169.7.2"
+    volumes:
+      - "../consul_config:/config"
+    ports:
+      - 9500:8500
+    networks:
+      dc2:
+        ipv4_address: 10.6.0.2
+      wan:
+        ipv4_address: 192.169.7.4
+
+  # Define api service and envoy sidecar proxy for version 2 of the service
+  payments_v2:
+    image: nicholasjackson/fake-service:v0.7.3
+    environment:
+      LISTEN_ADDR: localhost:9090
+      NAME: payments-dc2
+      MESSAGE: "PAYMENTS V2"
+    networks:
+      dc2:
+        ipv4_address: 10.6.0.3
+  payments_proxy_v2:
+    image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
+    environment:
+      CONSUL_HTTP_ADDR: 10.6.0.2:8500
+      CONSUL_GRPC_ADDR: 10.6.0.2:8502
+      SERVICE_CONFIG: /config/payments_v2.hcl
+      CENTRAL_CONFIG: "/central_config/web-defaults.hcl;/central_config/currency-defaults.hcl;/central_config/currency-resolver.hcl"
+    volumes:
+      - "./service_config:/config"
+      - "./central_config:/central_config"
+    command: ["consul", "connect", "envoy","-sidecar-for", "payments-v2"]
+    network_mode: "service:payments_v2"
+
+networks:
+  dc2:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.6.0.0/16
