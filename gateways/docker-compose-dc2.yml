@@ -17,8 +17,6 @@ services:
     networks:
       dc2:
         ipv4_address: 10.6.0.2
-      wan:
-        ipv4_address: 192.169.7.4
 
   # Define api service and envoy sidecar proxy for version 2 of the service
   payments_v2:
@@ -27,9 +25,6 @@ services:
       LISTEN_ADDR: localhost:9090
       NAME: payments-dc2
       MESSAGE: "PAYMENTS V2"
-    networks:
-      dc2:
-        ipv4_address: 10.6.0.3
   payments_proxy_v2:
     image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
     environment:
