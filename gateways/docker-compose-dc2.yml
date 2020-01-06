@@ -7,8 +7,8 @@ services:
       - consul
       - agent
       - "-config-file=/config/consul-dc2.hcl"
-      - "-advertise=${DC2_PRIVATE_IP}"
-      - "-advertise-wan=${DC2_PUBLIC_IP}"
+      - "-advertise=${DC2_SERVER_PRIVATE_IP}"
+      - "-advertise-wan=${DC2_SERVER_PUBLIC_IP}"
       - "-retry-join=${DC2_RETRY_JOIN_IP}"
     volumes:
       - "../consul_config:/config"
@@ -21,6 +21,8 @@ services:
       LISTEN_ADDR: 0.0.0.0:9090
       NAME: payments-dc2
       MESSAGE: "PAYMENTS V2"
+    network_mode: host
+
   payments_proxy_v2:
     image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
     environment:
