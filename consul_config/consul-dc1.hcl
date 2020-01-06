@@ -2,7 +2,7 @@ data_dir = "/tmp/"
 log_level = "DEBUG"
 
 datacenter = "dc1"
-primary_datacenter = "dc1"
+primary_datacenter = "dc2"
 
 server = true
 
