@@ -9,6 +9,7 @@ services:
       - "-config-file=/config/consul-dc1.hcl"
       - "-advertise=${DC1_SERVER_PRIVATE_IP}"
       - "-advertise-wan=${DC1_SERVER_PUBLIC_IP}"
+      - "-retry-join=${DC1_RETRY_JOIN_IP}"
     volumes:
       - "../consul_config:/config"
     network_mode: host
