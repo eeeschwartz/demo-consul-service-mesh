@@ -13,24 +13,24 @@ services:
       - "../consul_config:/config"
     network_mode: host
 
-  # Define api service and envoy sidecar proxy for version 2 of the service
-  payments_v2:
-    image: nicholasjackson/fake-service:v0.7.3
-    environment:
-      LISTEN_ADDR: 0.0.0.0:9090
-      NAME: payments-dc2
-      MESSAGE: "PAYMENTS V2"
-    network_mode: host
+#   # Define api service and envoy sidecar proxy for version 2 of the service
+#   payments_v2:
+#     image: nicholasjackson/fake-service:v0.7.3
+#     environment:
+#       LISTEN_ADDR: 0.0.0.0:9090
+#       NAME: payments-dc2
+#       MESSAGE: "PAYMENTS V2"
+#     network_mode: host
 
-  payments_proxy_v2:
-    image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
-    environment:
-      CONSUL_HTTP_ADDR: ${DC_SERVER_PRIVATE_IP}:8500
-      CONSUL_GRPC_ADDR: ${DC_SERVER_PRIVATE_IP}:8502
-      SERVICE_CONFIG: /config/payments_v2.hcl
-      CENTRAL_CONFIG: "/central_config/web-defaults.hcl;/central_config/currency-defaults.hcl;/central_config/currency-resolver.hcl"
-    volumes:
-      - "./service_config:/config"
-      - "./central_config:/central_config"
-    command: ["consul", "connect", "envoy","-sidecar-for", "payments-v2"]
-    network_mode: host
+#   payments_proxy_v2:
+#     image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
+#     environment:
+#       CONSUL_HTTP_ADDR: ${DC_SERVER_PRIVATE_IP}:8500
+#       CONSUL_GRPC_ADDR: ${DC_SERVER_PRIVATE_IP}:8502
+#       SERVICE_CONFIG: /config/payments_v2.hcl
+#       CENTRAL_CONFIG: "/central_config/web-defaults.hcl;/central_config/currency-defaults.hcl;/central_config/currency-resolver.hcl"
+#     volumes:
+#       - "./service_config:/config"
+#       - "./central_config:/central_config"
+#     command: ["consul", "connect", "envoy","-sidecar-for", "payments-v2"]
+#     network_mode: host
