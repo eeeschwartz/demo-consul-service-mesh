@@ -32,6 +32,7 @@ services:
         ipv4_address: ${DC2_SERVICE_PAYMENTS_IP}
   payments_proxy_v2:
     image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
+    restart: always
     environment:
       CONSUL_HTTP_ADDR: ${DC2_SERVER_PRIVATE_IP}:8500
       CONSUL_GRPC_ADDR: ${DC2_SERVER_PRIVATE_IP}:8502
