@@ -2,7 +2,7 @@ version: "3.3"
 services:
 
   consul-dc2:
-    image: consul:1.6.2
+    image: consul:1.6.1
     command:
       - consul
       - agent
@@ -31,7 +31,7 @@ services:
       dc2:
         ipv4_address: ${DC2_SERVICE_PAYMENTS_IP}
   payments_proxy_v2:
-    image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
+    image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     restart: always
     environment:
       CONSUL_HTTP_ADDR: ${DC2_SERVER_PRIVATE_IP}:8500
@@ -45,7 +45,7 @@ services:
     network_mode: "service:payments_v2"
 
   gateway-dc2:
-    image: nicholasjackson/consul-envoy:v1.6.2-v0.10.0
+    image: nicholasjackson/consul-envoy:v1.6.1-v0.10.0
     environment:
       CONSUL_HTTP_ADDR: ${DC2_SERVER_PRIVATE_IP}:8500
       CONSUL_GRPC_ADDR: ${DC2_SERVER_PRIVATE_IP}:8502
