@@ -7,6 +7,7 @@ services:
       - consul
       - agent
       - "-config-file=/config/consul-dc2.hcl"
+      - "-advertise=${DC2_SERVER_PUBLIC_IP}"
       - "-advertise-wan=${DC2_SERVER_PUBLIC_IP}"
       - "-retry-join-wan=${DC1_SERVER_PUBLIC_IP}"
     volumes:
