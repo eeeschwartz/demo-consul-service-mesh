@@ -4,5 +4,5 @@ Name = "web"
 Protocol = "http"
 
 MeshGateway = {
-  mode = "local"
+  mode = "none"
 }
