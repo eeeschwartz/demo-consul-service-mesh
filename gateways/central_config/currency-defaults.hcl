@@ -4,5 +4,5 @@ Name = "currency"
 Protocol = "http"
 
 MeshGateway = {
-  mode = "local"
+  mode = "none"
 }
